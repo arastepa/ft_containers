@@ -40,14 +40,14 @@ namespace ft
                 {
                     for(i = 0; i < _size; i++)
                     {
-                        _alloc.construct(&_data[i], val);
+                        _alloc.construct(_alloc.address(_data[i]), val);
                     }
                 }
                 catch(...)
                 {
                     for (size_type j = 0; j < i; j++)
                     {
-                        _alloc.destroy(&_data[i]);
+                        _alloc.destroy(_alloc.address(_data[j]));
                     }
                     _alloc.deallocate(_data, _capacity);
                     throw;
@@ -63,7 +63,7 @@ namespace ft
             }
             virtual ~vector()
 		    {
-			    for (size_type i = 0; i < _size; ++i) { _alloc.destroy(&_data[i]); }
+			    for (size_type i = 0; i < _size; ++i) { _alloc.destroy(_alloc.address(_data[i])); }
 			    _alloc.deallocate(_data, _capacity);
 		    }
             vector (const vector& x) : _data(NULL),_alloc(x._alloc), _size(0), _capacity(x._capacity)
@@ -135,7 +135,7 @@ namespace ft
                 {
                     for (size_type i = n; i < _size; i++)
                     {
-                        _alloc.destroy(&_data[i]);
+                        _alloc.destroy(_alloc.address(_data[i]));
                     }
                     _size = n;
                 }
@@ -149,14 +149,14 @@ namespace ft
                     {
                         for (i = _size; i < n; i++)
                         {
-                            _alloc.construct(&_data[i], val);
+                            _alloc.construct(_alloc.address(_data[i]), val);
                         }
                     }
                     catch(...)
                     {
                         for (size_type j = _size; j < i; j++)
                         {
-                            _alloc.destroy(&_data[j]);
+                            _alloc.destroy(_alloc.address(_data[j]));
                         }
                         _alloc.deallocate(_data, _capacity);
                         throw;
@@ -228,7 +228,7 @@ namespace ft
             {
                 for (size_type i = 0; i < _size; i++)
                 {
-                   _alloc.destroy(&_data[i]);
+                   _alloc.destroy(_alloc.address(_data[i]));
                 }
                if (std::distance(first, last) > static_cast<difference_type>(_capacity))
                 {
@@ -243,7 +243,7 @@ namespace ft
                 {
                     for (; first != last; first++)
                     {
-                        _alloc.construct(&_data[i], *first);
+                        _alloc.construct(_alloc.address(_data[i]), *first);
                         i++;
                     }
                 }
@@ -251,7 +251,7 @@ namespace ft
                 {
                      for (size_type j = 0; j < i; j++)
                     {
-                        _alloc.destroy(&_data[j]);
+                        _alloc.destroy(_alloc.address(_data[j]));
                     }
                     _alloc.deallocate(_data, _capacity);
                     throw;
@@ -264,7 +264,7 @@ namespace ft
 
                  for (size_type i = 0; i < _size; i++)
                 {
-                    _alloc.destroy(&_data[i]);
+                    _alloc.destroy(_alloc.address(_data[i]));
                 }
                 if ( n > _capacity)
                 {
@@ -277,14 +277,14 @@ namespace ft
                 {
                     for (i = 0; i < n; i++)
                     {
-                        _alloc.construct(&_data[i], val);
+                        _alloc.construct(_alloc.address(_data[i]), val);
                     }
                 }
                 catch(...)
                 {
                     for (size_type j = 0; j < i; j++)
                     {
-                        _alloc.destroy(&_data[j]);
+                        _alloc.destroy(_alloc.address(_data[j]));
                     }
                     _alloc.deallocate(_data, _capacity);
                     throw;
@@ -299,7 +299,7 @@ namespace ft
                 }
                 try
                 {
-                    _alloc.construct(&_data[_size++], val);
+                    _alloc.construct(_alloc.address(_data[_size++]), val);
                 }
                 catch(...)
                 {
@@ -310,7 +310,7 @@ namespace ft
             void pop_back()
             {
                 if (_size)
-                    _alloc.destroy(&_data[--_size]);
+                    _alloc.destroy(_alloc.address(_data[--_size]));
             }
             iterator insert (iterator position, const value_type& val)
             {
@@ -337,16 +337,16 @@ namespace ft
                 {
                     for (i = 0; i < static_cast<size_type>(std::distance(this->begin(), position)); i++)
                     {
-                        _alloc.construct(&tmp[i], _data[i]);
+                        _alloc.construct(_alloc.address(tmp[i]), _data[i]);
                     }
                     while (n--)
                     {
-                        _alloc.construct(&tmp[i], val);
+                        _alloc.construct(_alloc.address(tmp[i]), val);
                         i++;
                     }
                     for (size_type j = std::distance(this->begin(), position); j < _size; j++)
                     {
-                        _alloc.construct(&tmp[i], _data[j]);
+                        _alloc.construct(_alloc.address(tmp[i]), _data[j]);
                         i++;
                     }
                 }
@@ -354,7 +354,7 @@ namespace ft
                 {
                     for (size_type j = 0; j < i; j++)
                     {
-                        _alloc.destroy(&tmp[j]);
+                        _alloc.destroy(_alloc.address(tmp[j]));
                     }
                     _alloc.deallocate(tmp, tmpcapacity);
                     if (!this->empty())
@@ -387,16 +387,16 @@ namespace ft
                 {
                     for (i = 0; i < static_cast<size_type>(std::distance(this->begin(), position)); i++)
                     {
-                        _alloc.construct(&tmp[i], _data[i]);
+                        _alloc.construct(_alloc.address(tmp[i]), _data[i]);
                     }
                     for (; first != last; first++)
                     {
-                        _alloc.construct(&tmp[i], *first);
+                        _alloc.construct(_alloc.address(tmp[i]), *first);
                         i++;
                     }
                     for (size_type j = std::distance(this->begin(), position); j < _size; j++)
                     {
-                        _alloc.construct(&tmp[i], _data[j]);
+                        _alloc.construct(_alloc.address(tmp[i]), _data[j]);
                         i++;
                     }
                 }
@@ -404,7 +404,7 @@ namespace ft
                 {
                     for (size_type j = 0; j < i; j++)
                     {
-                        _alloc.destroy(&tmp[j]);
+                        _alloc.destroy(_alloc.address(tmp[j]));
                     }
                     _alloc.deallocate(tmp, tmpcapacity);
                     if (!this->empty())
@@ -427,14 +427,14 @@ namespace ft
                 {
                     for (i = index; i < _size - 1; i++)
                     {
-                        _alloc.construct(&_data[i], _data[i + 1]);
+                        _alloc.construct(_alloc.address(_data[i]), _data[i + 1]);
                     }
                 }
                 catch(...)
                 {
                     for (size_type j = index; j < i; j++)
                     {
-                        _alloc.destroy(&_data[i]);
+                        _alloc.destroy(_alloc.address(_data[i]));
                     }
                     _alloc.deallocate(_data, _capacity);
                     throw;
@@ -454,7 +454,7 @@ namespace ft
                 iterator temp(first);
                 while (first != last)
                 {
-                    _alloc.destroy(&(*first));
+                    _alloc.destroy(_alloc.address((*first)));
                     first++;
                 }
                 try
@@ -469,7 +469,7 @@ namespace ft
                 {
                     for (size_type i = 0; i < j; i++)
                     {
-                        _alloc.destroy(&_data[i]);
+                        _alloc.destroy(_alloc.address(_data[i]));
                     }
                     _alloc.deallocate(_data, _capacity);
                     throw;
@@ -481,7 +481,7 @@ namespace ft
             {
                 for (size_type i = 0; i < this->size(); i++)
                 {
-                    _alloc.destroy(&_data[i]);
+                    _alloc.destroy(_alloc.address(_data[i]));
                 }
                 _size = 0;
             }
@@ -511,14 +511,14 @@ namespace ft
                 {
                     for (i = 0; i < _size; i++)
                     {
-                        _alloc.construct(&tmp[i], _data[i]);
+                        _alloc.construct(_alloc.address(tmp[i]), _data[i]);
                     }
                 }
                 catch(...)
                 {
                     for (size_type j = 0; j < i; j++)
                     {
-                        _alloc.destroy(&tmp[j]);
+                        _alloc.destroy(_alloc.address(tmp[j]));
                     }
                     _alloc.deallocate(tmp, new_capacity);
                     throw;
