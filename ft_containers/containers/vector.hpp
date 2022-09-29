@@ -210,6 +210,10 @@ namespace ft
             {
                 return (*_data);
             }
+            pointer data()
+            {
+                return (_data);
+            }
             reference back()
             {
                 return (_data[_size - 1]);
