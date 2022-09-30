@@ -214,6 +214,10 @@ namespace ft
             {
                 return (_data);
             }
+            const_pointer data() const
+            {
+                return (_data);
+            }
             reference back()
             {
                 return (_data[_size - 1]);
